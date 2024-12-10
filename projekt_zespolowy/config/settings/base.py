@@ -103,6 +103,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "projekt_zespolowy.users",
     # Your stuff: custom apps go here
+    "cardeals.apps.CardealsConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
