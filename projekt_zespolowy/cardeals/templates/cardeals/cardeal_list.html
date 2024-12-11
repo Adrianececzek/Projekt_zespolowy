@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    {% for cardeal in deals %}
+    <div class="col-md-4">
+      {% include "cardeals/card.html" with cardeal=cardeal %}
+    </div>
+    {% endfor %}
+  </div>
+{% endblock %}

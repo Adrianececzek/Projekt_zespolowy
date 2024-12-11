@@ -35,6 +35,7 @@ class Car(models.Model):
         REAR = "R", _("Rear (RWD)")
         ALL = "A", _("All (AWD)")
         FOUR = "F", _("Four (FWD)")
+    slug = models.SlugField(max_length=256, unique=True, editable=False)
     manufacturer = models.CharField(max_length=50, verbose_name='Car Manufacturer')
     model = models.CharField(max_length=50, verbose_name='Car Model')
     version = models.CharField(max_length=50, verbose_name='Car Version')
@@ -50,6 +51,22 @@ class Car(models.Model):
     fuel_type = models.CharField(max_length=20, choices=FuelChoice, default=FuelChoice.PETROL, verbose_name='Car Fuel Type')
     transmission_type = models.CharField(max_length=20, choices=TransmissionChoice, default=TransmissionChoice.MANUAL, verbose_name='Car Transmission Type')
     drive_type = models.CharField(max_length=20, choices=DriveTypeChoice, default=DriveTypeChoice.FRONT, verbose_name='Car Drive Type')
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = (self.manufacturer+" "+self.model+" "+self.version).strip()
+            for candidate in generate_slug(base):
+                if not CarDeal.objects.filter(slug=candidate).exists():
+                    self.slug = candidate
+                    break
+            else:
+                raise Exception("Can't create new Car object")
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.manufacturer+" "+self.model+" "+self.version
+
 
 class CarDeal(models.Model):
     """User car deal model class"""

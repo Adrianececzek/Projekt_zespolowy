@@ -6,13 +6,13 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include
 from django.urls import path
 from django.views import defaults as default_views
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
+    #path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path(
         "about/",
         TemplateView.as_view(template_name="pages/about.html"),
@@ -24,7 +24,11 @@ urlpatterns = [
     path("users/", include("projekt_zespolowy.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-    # ...
+    path("",RedirectView.as_view(
+        query_string=True,
+        pattern_name="cardeals:list"),
+         name="home"),
+    path("cardeals/", include("cardeals.urls", namespace="cardeals")),
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]
