@@ -1,6 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <div>
+    <a
+      href="{% url 'cardeals:createcar'%}"
+      class="btn btn-outline-primary">
+      <i class="fa fa-edit"></i>Create car
+    </a>
+  </div>
+
+  <div>
+    <a
+      href="{% url 'cardeals:createcardeal'%}"
+      class="btn btn-outline-primary">
+      <i class="fa fa-edit"></i>Create car deal
+    </a>
+  </div>
+
   <div class="row">
     {% for cardeal in deals %}
     <div class="col-md-4">

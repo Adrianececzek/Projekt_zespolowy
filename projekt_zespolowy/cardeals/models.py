@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from datetime import datetime
@@ -36,6 +37,7 @@ class Car(models.Model):
         ALL = "A", _("All (AWD)")
         FOUR = "F", _("Four (FWD)")
     slug = models.SlugField(max_length=256, unique=True, editable=False)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, verbose_name='Author')
     manufacturer = models.CharField(max_length=50, verbose_name='Car Manufacturer')
     model = models.CharField(max_length=50, verbose_name='Car Model')
     version = models.CharField(max_length=50, verbose_name='Car Version')
@@ -63,6 +65,9 @@ class Car(models.Model):
                 raise Exception("Can't create new Car object")
 
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("cardeals:list")
 
     def __str__(self):
         return self.manufacturer+" "+self.model+" "+self.version
@@ -92,6 +97,9 @@ class CarDeal(models.Model):
                 raise Exception("Can't create new CarDeal object")
 
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("cardeals:detail", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.title

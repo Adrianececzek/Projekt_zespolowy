@@ -1,11 +1,15 @@
 <div class="card mb-4 box-shadow">
   <img
-      alt="Thumbnail [100%x225]"
+      alt="Thumbnail"
       class="card-img-top"
       src="{{ cardeal.main_photo }}"
       style="height: 400px; width: 100%; display: block;">
   <div class="card-body">
-    <p class="card-title text-center" style="font-weight: bold"> {{cardeal.title}}</p>
+    <p class="card-title text-center" style="font-weight: bold">
+      <a href="{{cardeal.get_absolute_url}}">
+      {{cardeal.title}}
+      </a>
+    </p>
     <p class="card-text">
       <p>
         <span style="float: right">{{cardeal.author}}</span>
