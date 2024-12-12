@@ -1,11 +1,56 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="card">
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Save your deal!">
-  </form>
+<style>
+  /* Styl wyśrodkowujący formularz */
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* Wysokość widoku */
+  }
+
+  .card {
+    width: 100%; /* Pełna szerokość w ramach kontenera */
+    max-width: 600px; /* Maksymalna szerokość karty */
+    border-radius: 8px; /* Zaokrąglone rogi */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Cień karty */
+    padding: 20px; /* Dodanie marginesów wewnętrznych */
+  }
+
+  .form-group {
+    margin-bottom: 20px; /* Odstęp między polami formularza */
+  }
+
+  input[type="submit"] {
+    width: 100%; /* Szerokość przycisku na pełną szerokość */
+    padding: 12px; /* Większy przycisk */
+    font-size: 16px; /* Wysokość czcionki */
+    background-color: #007bff; /* Kolor tła przycisku */
+    color: white; /* Kolor tekstu przycisku */
+    border: none; /* Usunięcie obramowania */
+    border-radius: 4px; /* Zaokrąglenie przycisku */
+    cursor: pointer; /* Zmiana kursora na wskaźnik */
+  }
+
+  input[type="submit"]:hover {
+    background-color: #0056b3; /* Ciemniejszy kolor przycisku po najechaniu */
+  }
+
+  input[type="submit"]:focus {
+    outline: none; /* Usunięcie konturu przycisku po kliknięciu */
+  }
+</style>
+
+<div class="container">
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form.as_p }} <!-- Renderowanie formularza jako paragrafy -->
+      </div>
+      <input type="submit" value="Save your car!">
+    </form>
+  </div>
 </div>
 {% endblock %}

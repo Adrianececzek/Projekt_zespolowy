@@ -3,7 +3,8 @@ from cardeals.views import (
     CarDealListView,
     CarCreateView,
     CarDealCreateView,
-    CarDealDetailView
+    CarDealDetailView,
+    CarDealUpdateView  # Dodano widok edycji
 )
 
 app_name = 'cardeals'
@@ -12,4 +13,5 @@ urlpatterns = [
     path("createcar/", CarCreateView.as_view(), name='createcar'),
     path("createcardeal/", CarDealCreateView.as_view(), name='createcardeal'),
     path("<str:slug>/", CarDealDetailView.as_view(), name='detail'),
+    path("<str:slug>/edit/", CarDealUpdateView.as_view(), name='editcardeal'),  # Nowa ścieżka
 ]
