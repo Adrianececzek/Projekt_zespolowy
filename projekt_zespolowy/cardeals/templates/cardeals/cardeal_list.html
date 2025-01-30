@@ -1,27 +1,97 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div>
-    <a
-      href="{% url 'cardeals:createcar'%}"
-      class="btn btn-outline-primary">
-      <i class="fa fa-edit"></i>Create car
-    </a>
-  </div>
+<style>
+  /* Kontener na karty - siatka 2 kolumny */
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* TYLKO 2 KOLUMNY */
+    gap: 40px; /* Większy odstęp */
+    padding: 20px;
+    justify-content: center;
+  }
 
-  <div>
-    <a
-      href="{% url 'cardeals:createcardeal'%}"
-      class="btn btn-outline-primary">
-      <i class="fa fa-edit"></i>Create car deal
-    </a>
-  </div>
+  .card {
+    max-width: 90%;
+    width: 90%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: #fff;
+    text-align: center;
+    padding: 16px;
+  }
 
-  <div class="row">
-    {% for cardeal in deals %}
-    <div class="col-md-4">
+  .card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .card > div:first-child {
+    display: contents;
+  }
+
+  /* Nagłówek */
+  .card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  /* Autor i cena */
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+  }
+
+  /* Nowe przyciski */
+  .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .btn-custom {
+    background-color: #6200ea;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+    display: inline-block;
+  }
+
+  .btn-custom:hover {
+    background-color: #3700b3;
+    transform: scale(1.05);
+  }
+</style>
+
+<!-- Nowe przyciski -->
+<div class="button-container">
+  <a href="{% url 'cardeals:createcar' %}" class="btn-custom">
+    ➕ Create Car
+  </a>
+  <a href="{% url 'cardeals:createcardeal' %}" class="btn-custom">
+    🚗 Create Car Deal
+  </a>
+</div>
+
+<!-- Siatka z kartami -->
+<div class="cards-container">
+  {% for cardeal in deals %}
+    <div class="card">
       {% include "cardeals/card.html" with cardeal=cardeal %}
     </div>
-    {% endfor %}
-  </div>
+  {% endfor %}
+</div>
 {% endblock %}

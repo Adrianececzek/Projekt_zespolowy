@@ -2,8 +2,8 @@
 
 {% block content %}
 <style>
-  /* Centering form */
-  .container {
+  /* Poprawka: Osobny kontener dla formularza */
+  .form-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -46,7 +46,10 @@
   }
 </style>
 
-<div class="container">
+<!-- Navbar będzie wczytany z base.html -->
+
+<!-- Osobny kontener dla formularza -->
+<div class="form-container">
   <div class="card">
     <form method="post">
       {% csrf_token %}
@@ -57,4 +60,5 @@
     </form>
   </div>
 </div>
+
 {% endblock %}
