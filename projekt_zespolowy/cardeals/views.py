@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.views.generic import CreateView, DetailView
 from django.views.generic.list import ListView
@@ -47,3 +48,7 @@ class CarDealUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         # Po zapisaniu użytkownik wraca do szczegółów oferty
         return self.object.get_absolute_url()
+
+
+class DashboardView(LoginRequiredMixin, TemplateView):
+    template_name = "cardeals/dashboard.html"
