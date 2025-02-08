@@ -80,7 +80,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: 10px;
-    color: white;  
+    color: white;
   }
 </style>
 
@@ -91,9 +91,16 @@
     <a href="{% url 'cardeals:createcar' %}" class="btn-custom">
       ➕ Create Car
     </a>
+    <!-- IMPORTANT! CHECK IF USER HAS ANY CARS ADDED IN ORDERD TO UNLOCK CREATE CAR DEAL OPTION -->
+    {%  if request.user.car_set.exists %}
     <a href="{% url 'cardeals:createcardeal' %}" class="btn-custom">
       🚗 Create Car Deal
-    </a>
+    </a> 
+    {%  else %}  
+      <span class="btn-custom btn-disabled" onclick="alert('Please create a car before trying to create a car deal!')">
+        🚗 Create Car Deal
+      </span>
+    {%  endif %}  
   </div>
  {% endif %}
 

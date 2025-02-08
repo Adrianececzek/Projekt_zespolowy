@@ -58,6 +58,5 @@ class CarDealDeleteView(LoginRequiredMixin, DeleteView):
     model = CarDeal
     success_url = reverse_lazy("cardeals:list")
 
-
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "cardeals/dashboard.html"

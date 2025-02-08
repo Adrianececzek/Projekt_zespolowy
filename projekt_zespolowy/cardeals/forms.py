@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.forms import ModelForm, HiddenInput
 from cardeals.models import Car, CarDeal
 from projekt_zespolowy.users.models import User
@@ -31,10 +32,19 @@ class CarDealForm(ModelForm):
         self.fields['author'].initial = User.objects.get(id=self.request.user.id)
         self.fields['author'].widget = HiddenInput()
 
-        """Make sure only cars made by the currently logged-in user are available."""
-        self.fields['car'].queryset = user_cars
-        """ Make sure only one car deal can be created per car"""
-        #TO DO
+        """
+        Make sure only cars made by the currently logged-in user are available.
+        Make sure only cars without created car deal are available.
+        """
+        self.fields['car'].queryset = user_cars.exclude(id__in=CarDeal.objects.values('car'))
+
+    # def clean_car(self):
+    #     """ Make sure only one car deal can be created per car"""
+    #     car = self.cleaned_data.get('car')
+    #     if CarDeal.objects.filter(car=car).exists():
+    #         raise ValidationError('A deal for this car already exists!')
+    #     return car
+
     class Meta:
         model = CarDeal
         fields = '__all__'
