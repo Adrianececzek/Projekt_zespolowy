@@ -36,7 +36,14 @@ class CarDealForm(ModelForm):
         Make sure only cars made by the currently logged-in user are available.
         Make sure only cars without created car deal are available.
         """
-        self.fields['car'].queryset = user_cars.exclude(id__in=CarDeal.objects.values('car'))
+        if self.instance and self.instance.pk:
+            # Include the current Car but exclude every other Car
+            self.fields['car'].queryset = Car.objects.filter(id=self.instance.car.id)
+        else:
+            # Exclude all cars that already have Car Deals
+            self.fields['car'].queryset = user_cars.exclude(
+                id__in=CarDeal.objects.values_list('car', flat=True)
+            )
 
     # def clean_car(self):
     #     """ Make sure only one car deal can be created per car"""
