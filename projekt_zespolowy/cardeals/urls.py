@@ -5,7 +5,8 @@ from cardeals.views import (
     CarDealCreateView,
     CarDealDetailView,
     CarDealUpdateView,
-    DashboardView
+    CarDealDeleteView,
+    DashboardView,
 )
 
 app_name = 'cardeals'
@@ -16,5 +17,5 @@ urlpatterns = [
     path("createcardeal/", CarDealCreateView.as_view(), name='createcardeal'),
     path("<str:slug>/", CarDealDetailView.as_view(), name='detail'),
     path("<str:slug>/edit/", CarDealUpdateView.as_view(), name='editcardeal'),
-
+    path("<str:slug>/delete/", CarDealDeleteView.as_view(), name='deletecardeal'),
 ]

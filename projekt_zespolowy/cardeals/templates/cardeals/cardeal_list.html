@@ -74,17 +74,36 @@
     background-color: #3700b3;
     transform: scale(1.05);
   }
+
+    .search-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    color: white;  
+  }
 </style>
 
 <!-- Nowe przyciski -->
-<div class="button-container">
-  <a href="{% url 'cardeals:createcar' %}" class="btn-custom">
-    ➕ Create Car
-  </a>
-  <a href="{% url 'cardeals:createcardeal' %}" class="btn-custom">
-    🚗 Create Car Deal
-  </a>
-</div>
+<!-- Added if statement - User must be logged in to be able to create car/cardeal  -->
+  {% if request.user.is_authenticated %}
+  <div class="button-container">
+    <a href="{% url 'cardeals:createcar' %}" class="btn-custom">
+      ➕ Create Car
+    </a>
+    <a href="{% url 'cardeals:createcardeal' %}" class="btn-custom">
+      🚗 Create Car Deal
+    </a>
+  </div>
+ {% endif %}
+
+  <!-- SEARCH BAR -->
+  <div class="search-bar">
+    <h4> Looking for something specific? </h4>
+    <form method="GET">
+      <input aria-label="Search" class="form-control" name="search" placeholder="Search.." type="search">
+    </form>
+  </div>
 
 <!-- Siatka z kartami -->
 <div class="cards-container">

@@ -140,12 +140,18 @@
       </p>
 
       <p class="description">{{ cardeal.description }}</p>
-
+      
+      <!-- CRUCIAL IF (DO NOT REMOVE UNDER ANY CIRCUMSTANCES) -->
+      {% if request.user.is_authenticated and request.user.id == cardeal.author_id %}
       <div class="card-footer">
         <a href="{% url 'cardeals:editcardeal' cardeal.slug %}" class="btn edit-button">
           Edit Details
         </a>
+                <a href="{% url 'cardeals:deletecardeal' cardeal.slug %}" class="btn edit-button">
+          Delete
+        </a>
       </div>
+      {%  endif %}
     </div>
   </div>
 {% endblock %}
