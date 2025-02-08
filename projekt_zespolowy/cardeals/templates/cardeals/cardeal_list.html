@@ -14,13 +14,14 @@
   .card {
     max-width: 90%;
     width: 90%;
-    border: 1px solid #ddd;
+    border: 1px solid #ff6a00;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(255, 106, 0, 0.3);
     overflow: hidden;
-    background-color: #fff;
+    background-color: #111;
     text-align: center;
     padding: 16px;
+    color: #f5f5f5;
   }
 
   .card img {
@@ -29,6 +30,7 @@
     height: auto;
     object-fit: cover;
     border-radius: 8px;
+    border-bottom: 3px solid #ff6a00;
   }
 
   .card > div:first-child {
@@ -40,6 +42,7 @@
     font-size: 1.2rem;
     font-weight: bold;
     margin-top: 10px;
+    color: #ff6a00;
   }
 
   /* Autor i cena */
@@ -47,7 +50,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 14px;
-    color: #555;
+    color: #e67e22;
     margin-top: 10px;
   }
 
@@ -60,7 +63,7 @@
   }
 
   .btn-custom {
-    background-color: #6200ea;
+    background-color: #ff6a00;
     color: white;
     padding: 12px 20px;
     border-radius: 8px;
@@ -68,49 +71,78 @@
     font-weight: bold;
     transition: 0.3s;
     display: inline-block;
+    border: 2px solid transparent;
   }
 
   .btn-custom:hover {
-    background-color: #3700b3;
+    background-color: #e65a00;
     transform: scale(1.05);
   }
 
-    .search-bar {
+  .btn-disabled {
+    background-color: #555;
+    cursor: not-allowed;
+    border: 2px solid #888;
+  }
+
+  .btn-disabled:hover {
+    transform: none;
+    background-color: #555;
+  }
+
+  .search-bar {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 10px;
     color: white;
   }
+
+  .search-bar h4 {
+    color: #ff6a00;
+  }
+
+  .search-bar input {
+    width: 60%;
+    padding: 10px;
+    border: 2px solid #ff6a00;
+    border-radius: 6px;
+    background-color: #222;
+    color: #fff;
+    transition: all 0.3s ease;
+  }
+
+  .search-bar input:focus {
+    border-color: #e65a00;
+    background-color: #333;
+  }
 </style>
 
 <!-- Nowe przyciski -->
-<!-- Added if statement - User must be logged in to be able to create car/cardeal  -->
-  {% if request.user.is_authenticated %}
+{% if request.user.is_authenticated %}
   <div class="button-container">
     <a href="{% url 'cardeals:createcar' %}" class="btn-custom">
       ➕ Create Car
     </a>
-    <!-- IMPORTANT! CHECK IF USER HAS ANY CARS ADDED IN ORDERD TO UNLOCK CREATE CAR DEAL OPTION -->
-    {%  if request.user.car_set.exists %}
-    <a href="{% url 'cardeals:createcardeal' %}" class="btn-custom">
-      🚗 Create Car Deal
-    </a> 
-    {%  else %}  
+    {% if request.user.car_set.exists %}
+      <a href="{% url 'cardeals:createcardeal' %}" class="btn-custom">
+        🚗 Create Car Deal
+      </a>
+    {% else %}
       <span class="btn-custom btn-disabled" onclick="alert('Please create a car before trying to create a car deal!')">
         🚗 Create Car Deal
       </span>
-    {%  endif %}  
+    {% endif %}
   </div>
- {% endif %}
+{% endif %}
 
-  <!-- SEARCH BAR -->
-  <div class="search-bar">
-    <h4> Looking for something specific? </h4>
-    <form method="GET">
-      <input aria-label="Search" class="form-control" name="search" placeholder="Search.." type="search">
-    </form>
-  </div>
+<!-- SEARCH BAR -->
+<div class="search-bar">
+  <h4>Looking for something specific?</h4>
+  <form method="GET">
+    <input aria-label="Search" class="form-control" name="search" placeholder="Search.." type="search">
+  </form>
+</div>
 
 <!-- Siatka z kartami -->
 <div class="cards-container">
@@ -120,4 +152,5 @@
     </div>
   {% endfor %}
 </div>
+
 {% endblock %}

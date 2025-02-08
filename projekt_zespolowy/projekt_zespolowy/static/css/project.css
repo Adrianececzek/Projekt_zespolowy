@@ -1,48 +1,53 @@
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-  color: #333;
+  background: linear-gradient(135deg, #000000, #ff6a00);
+  color: #f5f5f5;
   min-height: 100vh;
   margin: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
+  color: #ff6a00;
 }
 
 a {
   text-decoration: none;
   transition: color 0.2s ease-in-out;
+  color: #ff6a00;
+}
+
+a:hover {
+  color: #e65a00;
 }
 
 /* Navbar customization */
-.navbar-nav {
-  display: flex; /* Makes the nav items appear in a row */
-  gap: 20px; /* Adds space between the nav items */
-  list-style: none; /* Removes the bullets */
-  padding-left: 0; /* Removes default padding */
-}
-
-.nav-link {
-  text-decoration: none; /* Removes underline */
-  color: white; /* Adjust this to the color you want */
-  font-weight: bold;
-}
-
 .navbar {
-  background-color: black; /* Adjust the navbar background color */
-  padding: 10px 20px; /* Adds some padding around the links */
+  background-color: #111;
+  padding: 10px 20px;
 }
 
 .navbar-brand {
-  margin-right: 30px; /* Space between brand and nav items */
   font-size: 24px;
-  color: white;
+  color: #ff6a00;
   text-decoration: none;
 }
 
+.navbar-nav {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  padding-left: 0;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #f5f5f5;
+  font-weight: bold;
+}
+
 .navbar a:hover {
-  color: orange; /* Hover color for links */
+  color: #ff6a00;
 }
 
 /* Header image/banner */
@@ -53,22 +58,22 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   text-align: center;
+  color: white;
 }
 
 .header-banner h1 {
   font-size: 4rem;
   letter-spacing: 3px;
   text-transform: uppercase;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
   padding: 20px 40px;
   border-radius: 5px;
 }
 
 /* Call to Action Button */
 .btn-cta {
-  background-color: #f39c12;
+  background-color: #ff6a00;
   border: none;
   padding: 15px 30px;
   font-size: 1.2rem;
@@ -79,25 +84,26 @@ a {
 }
 
 .btn-cta:hover {
-  background-color: #e67e22;
+  background-color: #e65a00;
 }
 
 /* Car cards layout */
 .car-card {
-  background-color: #fff;
-  border: 1px solid #ddd;
+  background-color: #111;
+  border: 1px solid #ff6a00;
   border-radius: 5px;
   margin-bottom: 30px;
   transition: transform 0.3s ease-in-out;
+  color: #f5f5f5;
 }
 
 .car-card:hover {
-  transform: scale(1.05); /* Small zoom effect on hover */
+  transform: scale(1.05);
 }
 
 .car-card img {
   width: 100%;
-  border-bottom: 3px solid #f39c12;
+  border-bottom: 3px solid #ff6a00;
 }
 
 .car-card-body {
@@ -106,24 +112,15 @@ a {
 
 .car-card-title {
   font-size: 1.5rem;
-  color: #333;
+  color: #ff6a00;
   margin-bottom: 10px;
   text-transform: uppercase;
 }
 
 .car-card-price {
   font-size: 1.2rem;
-  color: #e67e22;
+  color: #ff6a00;
   font-weight: 600;
-}
-
-.car-card-details {
-  margin-top: 10px;
-}
-
-.car-card-details span {
-  font-weight: 500;
-  color: #555;
 }
 
 /* Footer */
@@ -135,60 +132,27 @@ footer {
 }
 
 footer a {
-  color: #f39c12;
+  color: #ff6a00;
   margin: 0 15px;
   font-size: 1.1rem;
 }
 
 footer a:hover {
-  color: #e67e22;
+  color: #e65a00;
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 767px) {
-  .navbar-brand {
-    font-size: 1.5rem;
-  }
-
-  .navbar-nav .nav-link {
-    font-size: 1rem;
-  }
-
-  .header-banner h1 {
-    font-size: 2.5rem;
-  }
-
-  .car-card-body {
-    padding: 15px;
-  }
-
-  .car-card-title {
-    font-size: 1.25rem;
-  }
-
-  .car-card-price {
-    font-size: 1rem;
-  }
-
-  .btn-cta {
-    width: 100%;
-    font-size: 1rem;
-  }
-}
-/* General Card Styling */
+/* Sporty Card */
 .sporty-card {
-  background: linear-gradient(135deg, #2c2c2c, #1f1f1f);
+  background: linear-gradient(135deg, #1a1a1a, #111);
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 16px rgba(255, 106, 0, 0.3);
   max-width: 550px;
   margin: 0 auto;
   margin-top: 30px;
-  color: #f8f8f8;
-  font-family: 'Helvetica Neue', sans-serif;
+  color: #f5f5f5;
 }
 
-/* Heading inside the card with a sleek, sophisticated font */
 .sporty-card h2 {
   font-size: 30px;
   text-align: center;
@@ -199,11 +163,10 @@ footer a:hover {
   color: #ff6a00;
 }
 
-/* Styling for the form fields with consistent height and size */
 .car-form {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Slightly smaller gap between fields */
+  gap: 15px;
 }
 
 .car-form input[type="text"],
@@ -211,32 +174,27 @@ footer a:hover {
 .car-form select,
 .car-form textarea {
   width: 100%;
-  padding: 10px; /* Smaller padding for more compact fields */
-  border: 2px solid #444;
+  padding: 10px;
+  border: 2px solid #ff6a00;
   border-radius: 6px;
-  font-size: 14px; /* Slightly smaller font size */
-  background-color: #333;
+  font-size: 14px;
+  background-color: #222;
   color: #fff;
   font-weight: 500;
-  height: 40px; /* Consistent height for input and select fields */
   transition: all 0.3s ease;
 }
 
 .car-form textarea {
-  height: auto; /* Allow textarea to resize naturally */
-  min-height: 80px; /* Set a minimum height for the textarea */
+  min-height: 80px;
 }
 
-/* Form fields on focus with a refined orange transition */
-.car-form input[type="text"]:focus,
-.car-form input[type="email"]:focus,
+.car-form input:focus,
 .car-form select:focus,
 .car-form textarea:focus {
-  border-color: #ff6a00;
-  background-color: #444;
+  border-color: #e65a00;
+  background-color: #333;
 }
 
-/* Styling for the submit button */
 .submit-btn {
   background-color: #ff6a00;
   color: #fff;
@@ -255,10 +213,8 @@ footer a:hover {
   transform: translateY(-2px);
 }
 
-/* Style for error messages or form feedback */
 .form-error {
   color: #e65a00;
   font-size: 14px;
-  margin-top: -10px;
   font-weight: bold;
 }
