@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load allauth account %}
+
+{% block head_title %}
+    {% trans "Sign In" %}
+{% endblock head_title %}
+
+{% block content %}
+    <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+        <div style="max-width: 400px; width: 100%; background-color: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+            <h1 style="text-align: center; font-size: 28px; color: #333;">{% trans "Zaloguj" %}</h1>
+
+            {% if not SOCIALACCOUNT_ONLY %}
+                <p style="text-align: center; color: #555;">
+                    {% blocktranslate %}If you have not created an account yet, please <a href="{{ signup_url }}" style="color: #007bff;">sign up</a> first.{% endblocktranslate %}
+                </p>
+
+                {% url 'account_login' as login_url %}
+                <form method="post" action="{{ login_url }}">
+                    {% csrf_token %}
+                    <div style="margin-bottom: 20px;">
+                        {{ form.as_p }}
+                        {{ redirect_field }}
+                    </div>
+
+                    <div style="text-align: center;">
+                        <button type="submit" style="padding: 12px 25px; background-color: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px;">
+                            {% trans "Zaloguj" %}
+                        </button>
+                    </div>
+                </form>
+            {% endif %}
+
+            {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
+                <hr />
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    {% if PASSKEY_LOGIN_ENABLED %}
+                        <button type="submit" form="mfa_login" id="passkey_login" style="background-color: transparent; color: #007bff; border: 2px solid #007bff; padding: 10px; cursor: pointer;">
+                            {% trans "Sign in with a passkey" %}
+                        </button>
+                    {% endif %}
+                    {% if LOGIN_BY_CODE_ENABLED %}
+                        <a href="{{ request_login_code_url }}" style="text-align: center; text-decoration: none; color: #007bff;">
+                            {% trans "Mail me a sign-in code" %}
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if SOCIALACCOUNT_ENABLED %}
+                {% include "socialaccount/snippets/login.html" %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_body %}
+    {{ block.super }}
+    {% if PASSKEY_LOGIN_ENABLED %}
+        {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
+    {% endif %}
+{% endblock %}
