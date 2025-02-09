@@ -6,24 +6,24 @@
 {% endblock head_title %}
 
 {% block content %}
-    <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
-        <div style="max-width: 400px; width: 100%; background-color: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-            <h1 style="text-align: center; font-size: 28px; color: #333;">{% trans "Sign Up" %}</h1>
+    <div class="signup-container">
+        <div class="signup-box">
+            <h1>{% trans "Sign Up" %}</h1>
 
-            <p style="text-align: center; color: #555;">
-                {% blocktranslate %}Already have an account? Then please <a href="{{ login_url }}" style="color: #007bff;">sign in</a>.{% endblocktranslate %}
+            <p class="signup-text">
+                {% blocktranslate %}Already have an account? Then please <a href="{{ login_url }}" class="signup-link">sign in</a>.{% endblocktranslate %}
             </p>
 
             {% if not SOCIALACCOUNT_ONLY %}
                 {% url 'account_signup' as action_url %}
-                <form method="post" action="{{ action_url }}" style="margin-top: 20px;">
+                <form method="post" action="{{ action_url }}" class="signup-form">
                     {% csrf_token %}
-                    <div style="margin-bottom: 20px;">
+                    <div>
                         {{ form.as_p }}
                         {{ redirect_field }}
                     </div>
-                    <div style="text-align: center;">
-                        <button type="submit" style="padding: 12px 25px; background-color: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px;">
+                    <div>
+                        <button type="submit" class="btn-signup">
                             {% trans "Sign Up" %}
                         </button>
                     </div>
@@ -31,17 +31,19 @@
             {% endif %}
 
             {% if PASSKEY_SIGNUP_ENABLED %}
-                <hr style="margin: 20px 0;">
-                <div style="text-align: center;">
-                    <a href="{{ signup_by_passkey_url }}" style="display: inline-block; padding: 12px 25px; background-color: transparent; color: #007bff; border: 2px solid #007bff; border-radius: 6px; text-decoration: none; font-size: 16px;">
+                <hr class="divider">
+                <div>
+                    <a href="{{ signup_by_passkey_url }}" class="btn-passkey">
                         {% trans "Sign up using a passkey" %}
                     </a>
                 </div>
             {% endif %}
 
             {% if SOCIALACCOUNT_ENABLED %}
-                <hr style="margin: 20px 0;">
-                {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+                <hr class="divider">
+                <div class="social-signup">
+                    {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+                </div>
             {% endif %}
         </div>
     </div>

@@ -18,17 +18,17 @@
 
     <div class="table-chart-container">
         <div class="results-container">
-            <!-- Przeniesiona wyszukiwarka nad tabelę -->
+            <!-- Wyszukiwarka -->
             <div class="search-container">
                 <h3>Wyszukaj producenta</h3>
                 <form method="GET">
                     <input type="text" name="manufacturer" placeholder="Wpisz producenta..." value="{{ request.GET.manufacturer|default:'' }}">
-                    <button type="submit">Szukaj</button>
+                    <button type="submit" class="btn-cta">Szukaj</button>
                 </form>
             </div>
 
             <h3>Najmniejszy przebieg</h3>
-            <table>
+            <table class="custom-table">
                 <thead>
                     <tr>
                         <th>Producent</th>
@@ -53,7 +53,7 @@
     </div>
 </div>
 
-<!-- Ładowanie Chart.js oraz pluginu DataLabels -->
+<!-- Ładowanie Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const priceCtx = document.getElementById('priceChart').getContext('2d');
     const priceData = [{{ cheap }}, {{ mid }}, {{ expensive }}];
     const priceLabels = ["Tania półka (< 50k)", "Średnia półka (50k - 150k)", "Droga półka (> 150k)"];
-    const priceColors = ["#4CAF50", "#FFC107", "#F44336"];
+    const priceColors = ["#00bcd4", "#673ab7", "#e91e63"]; // Turkus, Fiolet, Czerwień
 
     new Chart(priceCtx, {
         type: "doughnut",
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
         options: {
             plugins: {
                 datalabels: {
-                    color: "white",
+                    color: "#fff",
                     formatter: (value, ctx) => {
                         let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
                         return sum ? ((value / sum) * 100).toFixed(1) + "%" : "0%";
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const doorsCtx = document.getElementById('doorsChart').getContext('2d');
     const doorsLabels = {{ doors_labels|safe }};
     const doorsData = {{ doors_data|safe }};
-    const doorsColors = ["#1E90FF", "#32CD32", "#FFD700", "#FF4500", "#8A2BE2"];
+    const doorsColors = ["#2196f3", "#4caf50", "#673ab7", "#f44336", "#ff4081"]; // Niebieski, Zielony, Fioletowy, Czerwony, Różowy
 
     new Chart(doorsCtx, {
         type: "bar",
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // WYKRES LINIOWY - Liczba sprzedanych samochodów na rok
+    // ===== WYKRES LINIOWY - Liczba sprzedanych samochodów na rok =====
     const salesCtx = document.getElementById('salesChart').getContext('2d');
     const salesYears = {{ sales_years|safe }};
     const salesCounts = {{ sales_counts|safe }};
@@ -126,11 +126,11 @@ document.addEventListener("DOMContentLoaded", function () {
             datasets: [{
                 label: "Liczba sprzedanych aut",
                 data: salesCounts,
-                borderColor: "#007bff",
-                backgroundColor: "rgba(0, 123, 255, 0.2)",
+                borderColor: "#00bcd4", // Turkus
+                backgroundColor: "rgba(0, 188, 212, 0.2)",
                 borderWidth: 2,
                 pointRadius: 5,
-                pointBackgroundColor: "#007bff"
+                pointBackgroundColor: "#00bcd4"
             }]
         },
         options: {
@@ -156,13 +156,13 @@ document.addEventListener("DOMContentLoaded", function () {
         data: {
             labels: powerLabels,
             datasets: [{
-                label: "",
+                label: "Średnia moc auta",
                 data: powerData,
-                borderColor: "#FF4500",
-                backgroundColor: "rgba(255, 69, 0, 0.2)",
+                borderColor: "#03a9f4", // Jasnoniebieski
+                backgroundColor: "rgba(3, 169, 244, 0.2)",
                 borderWidth: 2,
                 pointRadius: 5,
-                pointBackgroundColor: "#FF4500"
+                pointBackgroundColor: "#03a9f4"
             }]
         },
         options: {
@@ -172,19 +172,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 legend: { display: false }
             },
             scales: {
-                y: { title: { display: true, text: 'Power' }, beginAtZero: true },
-                x: { title: { display: true, text: 'Condition' } }
+                y: { title: { display: true, text: 'Moc (KM)' }, beginAtZero: true },
+                x: { title: { display: true, text: 'Stan auta' } }
             }
         }
     });
 });
 </script>
 
+
 <style>
 .dashboard-container {
     text-align: center;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: auto;
+    padding: 20px;
 }
 
 .row {
@@ -197,16 +199,15 @@ document.addEventListener("DOMContentLoaded", function () {
 .first-row {
     display: flex;
     justify-content: center;
-    gap: 150px;
+    gap: 100px;
     margin-bottom: 20px;
     align-items: center;
 }
 
-/* Nowa sekcja: tabela i wykres obok siebie */
 .table-chart-container {
     display: flex;
     justify-content: center;
-    align-items: flex-start;  /* Dopasowanie do góry */
+    align-items: flex-start;
     gap: 50px;
     margin-top: 20px;
 }
@@ -215,35 +216,53 @@ document.addEventListener("DOMContentLoaded", function () {
     flex: 1;
     max-width: 350px;
     text-align: center;
+    background: rgba(17, 17, 17, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(255, 106, 0, 0.4);
+}
+
+.chart-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff6a00;
 }
 
 .results-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+    background: rgba(17, 17, 17, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(255, 106, 0, 0.4);
 }
 
-.search-container {
-    margin-bottom: 10px;
-}
-
-.results-container table {
-    width: 60%; /* Zmniejszenie szerokości tabeli */
-    max-width: 500px; /* Ograniczenie maksymalnej szerokości */
+.custom-table {
+    width: 80%;
     border-collapse: collapse;
-    margin-top: 10px;
-    border: 1px solid white;
+    margin-top: 15px;
 }
 
-.results-container th, .results-container td {
-    border: 1px solid white;
+.custom-table th, .custom-table td {
+    border: 1px solid #ff6a00;
     padding: 10px;
     text-align: center;
+    color: white;
 }
 
-.results-container th {
-    background-color: rgba(255, 255, 255, 0.2);
+.custom-table th {
+    background-color: rgba(255, 106, 0, 0.6);
+}
+
+.search-container input {
+    width: 80%;
+    padding: 10px;
+    border: 2px solid #ff6a00;
+    background: #222;
+    color: white;
+    font-weight: bold;
+}
+
+.search-container button {
+    margin-top: 10px;
 }
 </style>
 {% endblock %}
