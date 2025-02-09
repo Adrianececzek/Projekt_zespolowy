@@ -1,32 +1,249 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container">
-    <h1>Statystyki Samochodów</h1>
-    <canvas id="carChart"></canvas>
+<div class="dashboard-container">
+    <div class="row first-row">
+        <div class="chart-container">
+            <p class="chart-title">Wycena</p>
+            <canvas id="priceChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <p class="chart-title">Ilość drzwi</p>
+            <canvas id="doorsChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <p class="chart-title">Średnia moc auta</p>
+            <canvas id="powerChart"></canvas>
+        </div>
+    </div>
+
+    <div class="table-chart-container">
+        <div class="results-container">
+            <!-- Przeniesiona wyszukiwarka nad tabelę -->
+            <div class="search-container">
+                <h3>Wyszukaj producenta</h3>
+                <form method="GET">
+                    <input type="text" name="manufacturer" placeholder="Wpisz producenta..." value="{{ request.GET.manufacturer|default:'' }}">
+                    <button type="submit">Szukaj</button>
+                </form>
+            </div>
+
+            <h3>Najmniejszy przebieg</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producent</th>
+                        <th>Przebieg (km)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for car in filtered_cars %}
+                    <tr>
+                        <td>{{ car.manufacturer }}</td>
+                        <td>{{ car.odometer }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="chart-container">
+            <p class="chart-title">Sprzedaż samochodów na rok</p>
+            <canvas id="salesChart"></canvas>
+        </div>
+    </div>
 </div>
 
+<!-- Ładowanie Chart.js oraz pluginu DataLabels -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
 <script>
-    var ctx = document.getElementById('carChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
+document.addEventListener("DOMContentLoaded", function () {
+    // ===== WYKRES KOŁOWY - Kategorie cenowe =====
+    const priceCtx = document.getElementById('priceChart').getContext('2d');
+    const priceData = [{{ cheap }}, {{ mid }}, {{ expensive }}];
+    const priceLabels = ["Tania półka (< 50k)", "Średnia półka (50k - 150k)", "Droga półka (> 150k)"];
+    const priceColors = ["#4CAF50", "#FFC107", "#F44336"];
+
+    new Chart(priceCtx, {
+        type: "doughnut",
         data: {
-            labels: {{ labels|safe }},
+            labels: priceLabels,
+            datasets: [{ data: priceData, backgroundColor: priceColors }]
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    color: "white",
+                    formatter: (value, ctx) => {
+                        let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                        return sum ? ((value / sum) * 100).toFixed(1) + "%" : "0%";
+                    },
+                    font: { weight: 'bold', size: 14 }
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+
+    // ===== WYKRES SŁUPKOWY - Ilość samochodów dla każdej liczby drzwi =====
+    const doorsCtx = document.getElementById('doorsChart').getContext('2d');
+    const doorsLabels = {{ doors_labels|safe }};
+    const doorsData = {{ doors_data|safe }};
+    const doorsColors = ["#1E90FF", "#32CD32", "#FFD700", "#FF4500", "#8A2BE2"];
+
+    new Chart(doorsCtx, {
+        type: "bar",
+        data: {
+            labels: doorsLabels,
             datasets: [{
-                label: 'Liczba samochodów',
-                data: {{ values|safe }},
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
+                label: "Liczba samochodów",
+                data: doorsData,
+                backgroundColor: doorsColors.slice(0, doorsData.length)
             }]
         },
         options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                y: { title: { display: true, text: 'Liczba samochodów' }, beginAtZero: true },
+                x: { title: { display: true, text: 'Liczba drzwi' } }
             }
         }
     });
+
+    // WYKRES LINIOWY - Liczba sprzedanych samochodów na rok
+    const salesCtx = document.getElementById('salesChart').getContext('2d');
+    const salesYears = {{ sales_years|safe }};
+    const salesCounts = {{ sales_counts|safe }};
+
+    new Chart(salesCtx, {
+        type: "line",
+        data: {
+            labels: salesYears,
+            datasets: [{
+                label: "Liczba sprzedanych aut",
+                data: salesCounts,
+                borderColor: "#007bff",
+                backgroundColor: "rgba(0, 123, 255, 0.2)",
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBackgroundColor: "#007bff"
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: { enabled: true },
+                legend: { display: false }
+            },
+            scales: {
+                y: { title: { display: true, text: 'Liczba sprzedanych aut' }, beginAtZero: true },
+                x: { title: { display: true, text: 'Rok' } }
+            }
+        }
+    });
+
+    // ===== WYKRES LINIOWY - Średnia moc samochodów dla każdego condition =====
+    const powerCtx = document.getElementById('powerChart').getContext('2d');
+    const powerLabels = {{ power_labels|safe }};
+    const powerData = {{ power_data|safe }};
+
+    new Chart(powerCtx, {
+        type: "line",
+        data: {
+            labels: powerLabels,
+            datasets: [{
+                label: "",
+                data: powerData,
+                borderColor: "#FF4500",
+                backgroundColor: "rgba(255, 69, 0, 0.2)",
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBackgroundColor: "#FF4500"
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: { enabled: true },
+                legend: { display: false }
+            },
+            scales: {
+                y: { title: { display: true, text: 'Power' }, beginAtZero: true },
+                x: { title: { display: true, text: 'Condition' } }
+            }
+        }
+    });
+});
 </script>
+
+<style>
+.dashboard-container {
+    text-align: center;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.first-row {
+    display: flex;
+    justify-content: center;
+    gap: 150px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+/* Nowa sekcja: tabela i wykres obok siebie */
+.table-chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;  /* Dopasowanie do góry */
+    gap: 50px;
+    margin-top: 20px;
+}
+
+.chart-container {
+    flex: 1;
+    max-width: 350px;
+    text-align: center;
+}
+
+.results-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.search-container {
+    margin-bottom: 10px;
+}
+
+.results-container table {
+    width: 60%; /* Zmniejszenie szerokości tabeli */
+    max-width: 500px; /* Ograniczenie maksymalnej szerokości */
+    border-collapse: collapse;
+    margin-top: 10px;
+    border: 1px solid white;
+}
+
+.results-container th, .results-container td {
+    border: 1px solid white;
+    padding: 10px;
+    text-align: center;
+}
+
+.results-container th {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+</style>
 {% endblock %}
